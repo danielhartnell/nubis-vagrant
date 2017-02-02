@@ -2,11 +2,14 @@
 
 # Update the system
 apt update
-apt install -y git python python-pip curl jq unzip libssl-dev gcc
+apt install -y git python python-pip curl jq unzip libssl-dev gcc ruby
 
 # pip package management
 pip install awscli
 pip install "credstash>=1.11.0"
+
+# gem package management
+gem install librarian-puppet
 
 # Setup the environment
 echo "PATH=$PATH:/nubis-bin:/nubis-bin/nubis-builder/bin" \

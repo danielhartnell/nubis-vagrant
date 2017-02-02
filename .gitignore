@@ -7,6 +7,7 @@
 
 # Vagrant stuff
 acceptance_config.yml
+ubuntu-xenial-16.04-cloudimg-console.log
 boxes/*
 /.vagrant
 /website/.vagrant
