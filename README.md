@@ -43,3 +43,57 @@ $ ubuntu@ubuntu-xenial:~$ # Follow my documentation to setup aws-vault, etc.
 This should result in a relatively persistent work environment. Keep in mind
 that destroying the vm with `vagrant destroy` will mean that you will have to
 re-configure `aws-vault`.
+
+#### aws-vault
+
+In order to use the tooling installed here, you'll want to configure aws-vault
+with your credentials. From a high level, the following steps should be
+sufficient. Let me know if you have any questions.
+
+When I started this process, I began by collecting my AWS access ID, secret and
+account name:
+
+$ACCOUNT_NAME
+$AWS_ACCESS_ID
+$AWS_SECRET
+
+```
+$ export AWS_VAULT_BACKEND=file
+$ aws-vault add $ACCOUNT_NAME
+```
+
+This sets a file backend for aws-vault. In our previous work, we probably used
+keychain on the Mac. With this new setup, we'll be storing credentials in an
+encrypted file on the VM.
+
+It should prompt you for your $AWS_ACCESS_ID and $AWS_SECRET as well as a
+password that you will use in the future to unlock your credentials.
+
+**Note:** In the Nubis documentation, you may see that they used $ACCOUNT_NAME-ro or
+$ACCOUNT_NAME-admin. I choose to use a single name as I did not find myself in
+need of a read-only (ro) account very often.
+
+Next, you'll need to add a new file in your VM to store the AWS CLI config:
+
+```
+$ touch ~/.aws/config
+```
+
+With that created, you can copy over most of the configuration you have on your
+host machine (or create new content from scratch):
+
+```
+[default]
+output = json
+region = us-west-2
+
+[profile $ACCOUNT_NAME]
+output = json
+region = us-west-2
+role_arn = arn:aws:iam::$ACCOUNT_ID:role/nubis/admin/$USER
+mfa_serial = arn:aws:iam::$ACCOUNT_ID:mfa/$USER
+```
+
+With this in place, you should be able to run a test command to see if you can
+successfully interact with your account. If you have any trouble, let me know so
+I can update this document.
