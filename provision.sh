@@ -2,7 +2,7 @@
 
 # Update the system
 apt update
-apt install -y git python python-pip curl jq unzip libssl-dev gcc ruby
+apt install -y git python python-pip curl jq unzip libssl-dev gcc ruby ntp
 
 # pip package management
 pip install awscli
