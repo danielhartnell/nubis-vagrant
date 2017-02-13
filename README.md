@@ -97,3 +97,23 @@ mfa_serial = arn:aws:iam::$ACCOUNT_ID:mfa/$USER
 With this in place, you should be able to run a test command to see if you can
 successfully interact with your account. If you have any trouble, let me know so
 I can update this document.
+
+#### nubis-builder
+
+You'll also need to add some content to a variables file before you can
+successfully run `nubis-builder build`. From within the virtual machine, edit
+the file: `/nubis-bin/nubis-builder/secrets/variables.json` and put in the
+following content (overwriting whatever is in there is fine):
+
+```
+{
+  "variables": {
+    "aws_region": "us-west-2",
+    "ami_regions": "us-west-2",
+    "aws_vault_profile": "${ACCOUNT_NAME_PROFILE_NAME_IN_AWS_CONFIG}"
+  }
+}
+```
+
+As you can see, you'll want to replace that variable with the aws-vault profile
+name for the account you want to work with.
